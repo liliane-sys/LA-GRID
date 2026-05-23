@@ -6,6 +6,7 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
 
   License:      Data sources are publicly available under their respective
                 open data licenses. See individual source URLs below.
+                
                 Code ©Liliane ML Burkhard, 2025
 
 ---
@@ -22,11 +23,11 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
 - **Live earthquake feed** — M2.0+ earthquakes for the last 30 days via the USGS real-time API, color-coded and sized by magnitude. Earthquakes M3.0+ pulse with an animated ring to indicate larger earthquake activity.
 - **Live wildfire feed** — active California wildfire incidents from the NIFC live data service, shown as animated flame icons 🔥
 - **Critical infrastructure layers:**
-  - 💧 **Aqueducts** — Los Angeles Aqueduct (1st & 2nd), Colorado River Aqueduct, State Water Project/California Aqueduct
-  - ◆ **Dams** — 15 major dams and reservoirs including Castaic, Pyramid, Hansen, San Gabriel, Diamond Valley Lake and Prado
-  - ⚡ **Power Substations** — 18 major LADWP & SCE substations and generating stations
-  - ⚓✈ **Ports & Airports** — Port of LA, Port of Long Beach, Port of Hueneme, LAX, Burbank, Long Beach and Ontario airports
-  - 🏥 **Major Hospitals** — 16 major trauma centers and medical facilities across the region
+  - **Aqueducts** — Los Angeles Aqueduct (1st & 2nd), Colorado River Aqueduct, State Water Project/California Aqueduct
+  - **Dams** — 15 major dams and reservoirs including Castaic, Pyramid, Hansen, San Gabriel, Diamond Valley Lake and Prado
+  - **Power Substations** — 18 major LADWP & SCE substations and generating stations
+  - **Ports & Airports** — Port of LA, Port of Long Beach, Port of Hueneme, LAX, Burbank, Long Beach and Ontario airports
+  - **Major Hospitals** — 16 major trauma centers and medical facilities across the region
 - **Interactive popups** — click any earthquake, wildfire, or infrastructure element for details; hover over any fault line to see its name
 - **Layer toggles** — independently show/hide all layers
 - **Auto-refresh** — earthquake data refreshes every 5 minutes
