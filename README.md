@@ -6,6 +6,7 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
 
   License:      Data sources are publicly available under their respective
                 open data licenses. See individual source URLs below.
+                
                 Code ©Liliane ML Burkhard, 2025
 
 ---
