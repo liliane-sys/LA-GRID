@@ -38,10 +38,6 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
 
 Open it in any browser. No installation, no server, no API key needed.
 
-```
-open index.html
-```
-
 The file is fully self-contained: The SCEC CFM fault geometry is embedded directly in the HTML. The earthquake and wildfire data are fetched live from public APIs each time the page loads. Infrastructure data is hardcoded from public records.
 
 ---
