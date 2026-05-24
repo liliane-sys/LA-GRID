@@ -29,7 +29,7 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
   - **Major Hospitals** — 16 major trauma centers and medical facilities across the region
 - **Interactive popups** — click any earthquake, wildfire, or infrastructure element for details; hover over any fault line to see its name
 - **Layer toggles** — independently show/hide all layers
-- **Auto-refresh** — earthquake data refreshes every 5 minutes; wildfires update every few hours
+- **Auto-refresh** — earthquake and wildfire data refreshes every 5 minutes
 - **Zero dependencies** — single self-contained HTML file, no server or build step required
 
 ---
@@ -77,7 +77,7 @@ Earthquakes M3.0+ that occurred within the past 30 days display a pulsing ring t
 
 ### Wildfire Data
 
-Active wildfire incident locations from the National Interagency Fire Center (NIFC) Wildland Fire Incident Management Application (WFIGS), filtered to California. Updates every few hours.
+Active wildfire incident locations from the National Interagency Fire Center (NIFC) Wildland Fire Incident Management Application (WFIGS), filtered to California. Wildfires update every few hours on the NIFC side, but the dashboard auto-refreshes every 5 minutes.
 
 ### Infrastructure Data
 
