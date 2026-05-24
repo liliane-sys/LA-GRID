@@ -18,7 +18,7 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
 
 ## Features
 
-- **455 fault traces** from the SCEC Community Fault Model (CFM) v6.1, including surface traces (solid) and blind fault projections (dashed) — correctly positioned using official SCEC geometry. Hover over any fault line to see its name.
+- **455 fault traces** from the SCEC Community Fault Model (CFM) v6.1, including surface traces (solid) and blind fault projections (dashed) — Hover over any fault line to see its name.
 - **Live earthquake feed** — M2.0+ earthquakes for the last 30 days via the USGS real-time API, color-coded and sized by magnitude. Earthquakes M3.0+ pulse with an animated ring to indicate larger earthquake activity.
 - **Live wildfire feed** — active California wildfire incidents from the NIFC live data service, shown as animated flame icons 🔥
 - **Critical infrastructure layers:**
@@ -29,7 +29,7 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
   - **Major Hospitals** — 16 major trauma centers and medical facilities across the region
 - **Interactive popups** — click any earthquake, wildfire, or infrastructure element for details; hover over any fault line to see its name
 - **Layer toggles** — independently show/hide all layers
-- **Auto-refresh** — earthquake data refreshes every 5 minutes
+- **Auto-refresh** — earthquake data refreshes every 5 minutes; wildfires update every few hours
 - **Zero dependencies** — single self-contained HTML file, no server or build step required
 
 ---
