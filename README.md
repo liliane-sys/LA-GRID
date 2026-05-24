@@ -6,7 +6,7 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
 
   License:      Data sources are publicly available under their respective
                 open data licenses. See individual source URLs below.
-                Code ©Liliane ML Burkhard, 2025
+                ©Liliane ML Burkhard, 2025
 
 ---
 
@@ -123,7 +123,7 @@ www.lmlburkhard.com
 
 ## License
 
-Code ©Liliane ML Burkhard, 2025.
+©Liliane ML Burkhard, 2025
 
 All data sources are publicly available under their respective open data licenses:
 - SCEC CFM: freely available for research and educational use — cite Plesch et al. (2007)
