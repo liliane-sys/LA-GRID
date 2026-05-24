@@ -512,6 +512,7 @@ async function init(){
   await new Promise(r=>setTimeout(r,500));
   hideLoading();
   setInterval(loadEarthquakes,5*60*1000);
+  setInterval(loadWildfires,5*60*1000);
 }
 init();
 </script>
