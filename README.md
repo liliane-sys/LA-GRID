@@ -77,7 +77,7 @@ Earthquakes M3.0+ that occurred within the past 30 days display a pulsing ring t
 
 ### Wildfire Data
 
-Live feed of active wildfire incidents in California from CAL FIRE Incident API, California Department of Forestry and Fire Protection (https://www.fire.ca.gov/incidents/). Covers all state, federal, and county-managed incidents reported to CAL FIRE. Data is fetched via corsproxy.io to resolve browser cross-origin restrictions. Coverage includes incidents of 10+ acres; very small or unreported fires may not appear. Dashboard auto-refreshes every 5 minutes.
+Live feed of active wildfire incidents in California from CAL FIRE Incident API, California Department of Forestry and Fire Protection. Covers all state, federal, and county-managed incidents reported to CAL FIRE. Data is fetched via corsproxy.io to resolve browser cross-origin restrictions. Coverage includes incidents of 10+ acres; very small or unreported fires may not appear. Dashboard auto-refreshes every 5 minutes.
 
 ### Infrastructure Data
 
@@ -108,7 +108,7 @@ Infrastructure layers are compiled from public records and official agency sourc
 
 - [Leaflet.js](https://leafletjs.com) 1.9.4 — interactive mapping library
 - [CartoDB Dark Matter](https://carto.com/basemaps/) — basemap tiles
-- [corsproxy.io](https://corsproxy.io)— CORS proxy for CAL FIRE API access
+- [corsproxy.io](https://corsproxy.io) — CORS proxy for CAL FIRE API access
 - Vanilla JavaScript — no frameworks
 - Single HTML file — no build step, no backend
 
