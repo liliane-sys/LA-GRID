@@ -205,6 +205,9 @@
       Faults: SCEC CFM 6.1<br>Quakes: USGS Live Feed<br>Fires: CAL FIRE Live Feed<br>Infra: LADWP/MWD/Public Records
     </div>
   </div>
+  <div class="panel-section" style="text-align:center;padding:12px 18px">
+    <button id="about-btn" onclick="openAbout()">ⓘ &nbsp;ABOUT LA-GRID</button>
+  </div>
 </div>
 <div id="info-popup">
   <div id="info-popup-close" onclick="closePopup()">x</div>
@@ -293,8 +296,8 @@ async function loadWildfires(){
   try{
     // CAL FIRE covers ALL California fires including county-managed incidents.
     // NIFC/WFIGS only tracks federal/multi-agency fires and misses local fires.
-    // fire.ca.gov blocks direct browser requests (no CORS headers), so route
-    // through corsproxy.io which adds the required Access-Control-Allow-Origin header, yessah!
+    // fire.ca.gov blocks direct browser requests (no CORS headers), so we route
+    // through corsproxy.io which adds the required Access-Control-Allow-Origin header. Yessah!
     const CALFIRE = 'https://www.fire.ca.gov/umbraco/api/IncidentApi/List?inactive=false';
     const res = await fetch('https://corsproxy.io/?' + encodeURIComponent(CALFIRE));
     if(!res.ok) throw new Error('HTTP '+res.status);
@@ -337,7 +340,7 @@ async function loadWildfires(){
 }
 
 
-// ── Infrastructure layers ──────────────────────────────────────────────────
+// ── Infrastructure layers ───────────────────────────────────────────────────
 
 function infraIcon(color, symbol, size) {
   return L.divIcon({
@@ -550,6 +553,197 @@ async function init(){
   setInterval(loadWildfires,5*60*1000);
 }
 init();
+</script>
+<!-- ── About modal ── -->
+<style>
+  #about-btn {
+    font-family:'Share Tech Mono',monospace; font-size:11px;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--accent); background:transparent;
+    border:1px solid rgba(0,229,255,0.3); border-radius:6px;
+    padding:7px 18px; cursor:pointer; width:100%;
+    transition:all 0.2s; opacity:0.7;
+  }
+  #about-btn:hover { opacity:1; background:rgba(0,229,255,0.08); box-shadow:0 0 10px rgba(0,229,255,0.15); }
+
+  #about-overlay {
+    display:none; position:fixed; inset:0; z-index:500;
+    background:rgba(4,6,15,0.85); backdrop-filter:blur(5px);
+    align-items:center; justify-content:center;
+  }
+  #about-overlay.open { display:flex; }
+
+  #about-modal {
+    background:rgba(4,8,20,0.97); border:1px solid rgba(0,229,255,0.22);
+    border-radius:10px; width:min(800px,92vw); max-height:85vh;
+    display:flex; flex-direction:column;
+    box-shadow:0 0 50px rgba(0,229,255,0.06);
+  }
+
+  #about-head {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 24px 15px; border-bottom:1px solid rgba(0,229,255,0.12);
+    flex-shrink:0;
+  }
+  #about-head-logo {
+    font-family:'Orbitron',monospace; font-size:20px; font-weight:900;
+    letter-spacing:0.1em; color:#fff;
+  }
+  #about-head-logo span { color:var(--accent); }
+  #about-head-sub {
+    font-family:'Share Tech Mono',monospace; font-size:11px;
+    letter-spacing:0.18em; color:rgba(180,180,180,0.7); margin-top:5px;
+  }
+  #about-x {
+    font-size:20px; background:none; border:none;
+    color:rgba(255,255,255,0.4); cursor:pointer; transition:color 0.2s;
+    font-family:'Share Tech Mono',monospace;
+  }
+  #about-x:hover { color:#fff; }
+
+  #about-body {
+    overflow-y:auto; padding:22px 26px 28px;
+    font-family:'Share Tech Mono',monospace;
+    font-size:13px; line-height:1.8; color:rgba(255,255,255,0.75);
+  }
+  #about-body::-webkit-scrollbar { width:4px; }
+  #about-body::-webkit-scrollbar-thumb { background:rgba(0,229,255,0.2); }
+
+  #about-body h2 {
+    font-family:'Orbitron',monospace; font-size:10px; font-weight:700;
+    letter-spacing:0.3em; color:var(--accent); text-transform:uppercase;
+    margin:22px 0 10px; padding-bottom:6px;
+    border-bottom:1px solid rgba(0,229,255,0.15);
+  }
+  #about-body h3 {
+    font-family:'Orbitron',monospace; font-size:9px; letter-spacing:0.2em;
+    color:rgba(0,229,255,0.7); margin:16px 0 8px; text-transform:uppercase;
+  }
+  #about-body p { margin-bottom:10px; }
+  #about-body strong { color:rgba(255,255,255,0.9); }
+  #about-body a { color:var(--accent); text-decoration:none; }
+  #about-body a:hover { text-decoration:underline; }
+  #about-body ul { margin:6px 0 12px 18px; }
+  #about-body li { margin-bottom:5px; }
+  #about-body table {
+    width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:12px;
+  }
+  #about-body th {
+    font-family:'Orbitron',monospace; font-size:8px; letter-spacing:0.2em;
+    color:rgba(0,229,255,0.55); text-transform:uppercase;
+    border-bottom:1px solid rgba(0,229,255,0.2); padding:7px 10px; text-align:left;
+  }
+  #about-body td {
+    padding:7px 10px; border-bottom:1px solid rgba(255,255,255,0.06);
+    vertical-align:top;
+  }
+  #about-body tr:last-child td { border-bottom:none; }
+  #about-body .divider {
+    border:none; border-top:1px solid rgba(255,255,255,0.07); margin:20px 0;
+  }
+  #about-body .attribution {
+    padding:14px 16px; border:1px solid rgba(0,229,255,0.18);
+    border-radius:6px; background:rgba(0,229,255,0.04);
+    font-size:12px; line-height:1.8; margin-top:10px;
+  }
+  #about-body .footer-note {
+    font-size:11px; color:rgba(180,180,180,0.6);
+    margin-top:20px; line-height:1.7;
+  }
+</style>
+
+<div id="about-overlay" onclick="overlayClick(event)">
+  <div id="about-modal">
+    <div id="about-head">
+      <div>
+        <div id="about-head-logo">LA<span>-</span>GRID</div>
+        <div id="about-head-sub">LOS ANGELES GEOSPATIAL RISK &amp; INFRASTRUCTURE DASHBOARD · LILIANE ML BURKHARD, 2025</div>
+      </div>
+      <button id="about-x" onclick="closeAbout()">✕</button>
+    </div>
+    <div id="about-body">
+
+      <p><strong>LA-GRID</strong> is an interactive, browser-based geospatial risk dashboard for the greater Los Angeles region (Santa Barbara to Oceanside). It displays active fault lines, live earthquake data, active wildfire incidents and critical infrastructure.</p>
+
+      <hr class="divider">
+      <h2>Features</h2>
+      <ul>
+        <li><strong>455 fault traces</strong> from the SCEC Community Fault Model (CFM) v6.1 — surface traces (solid) and blind fault projections (dashed). Hover any fault line to see its name.</li>
+        <li><strong>Live earthquake feed</strong> — M2.0+ earthquakes for the last 30 days via the USGS real-time API, color-coded and sized by magnitude. M3.0+ events pulse with an animated ring.</li>
+        <li><strong>Live wildfire feed</strong> — active California wildfire incidents from the CAL FIRE Incident API, shown as animated flame icons 🔥</li>
+        <li><strong>Critical infrastructure layers</strong> — aqueducts, dams, power substations, ports &amp; airports, and major hospitals.</li>
+        <li><strong>Auto-refresh</strong> — earthquake and wildfire data refreshes every 5 minutes.</li>
+        <li><strong>Zero dependencies</strong> — single self-contained HTML file, no server or build step required.</li>
+      </ul>
+
+      <hr class="divider">
+      <h2>Data Sources</h2>
+      <table>
+        <tr><th>Layer</th><th>Source</th></tr>
+        <tr><td>Fault Lines</td><td>SCEC Community Fault Model v6.1 — <a href="https://www.scec.org/research/cfm" target="_blank">scec.org</a></td></tr>
+        <tr><td>Earthquakes</td><td>USGS Earthquake Hazards Program — <a href="https://earthquake.usgs.gov" target="_blank">earthquake.usgs.gov</a></td></tr>
+        <tr><td>Wildfires</td><td>CAL FIRE Incident API — <a href="https://www.fire.ca.gov/incidents/" target="_blank">fire.ca.gov</a></td></tr>
+        <tr><td>Aqueducts</td><td>LADWP / Metropolitan Water District</td></tr>
+        <tr><td>Dams</td><td>National Inventory of Dams / CA DWR</td></tr>
+        <tr><td>Power Substations</td><td>LADWP / SCE public infrastructure maps</td></tr>
+        <tr><td>Ports &amp; Airports</td><td>Port Authority / FAA public records</td></tr>
+        <tr><td>Hospitals</td><td>California OSHPD public data</td></tr>
+        <tr><td>Basemap</td><td>CartoDB Dark Matter — ©OpenStreetMap contributors, ©CARTO</td></tr>
+      </table>
+
+      <h3>Fault Line Data</h3>
+      <p>Fault traces are from the <strong>SCEC CFM 6.1 Preferred Model</strong> — 443 fault objects representing active faults in southern California, built from mapped surface traces, seismicity, seismic reflection profiles and geologic cross-sections.</p>
+      <p>Reference: Plesch et al. (2007), <em>Community Fault Model (CFM) for Southern California</em>, Bulletin of the Seismological Society of America, 97(6):1793–1802.</p>
+
+      <h3>Wildfire Data</h3>
+      <p>Live feed from CAL FIRE covering all state, federal and county-managed incidents. Data fetched via corsproxy.io to resolve browser cross-origin restrictions. Coverage includes incidents of 10+ acres; very small or unreported fires may not appear.</p>
+
+      <hr class="divider">
+      <h2>Coverage</h2>
+      <table>
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>Region</td><td>Greater Los Angeles — Santa Barbara to Oceanside</td></tr>
+        <tr><td>Latitude</td><td>33.2°N – 34.9°N</td></tr>
+        <tr><td>Longitude</td><td>120.6°W – 116.4°W</td></tr>
+        <tr><td>Earthquake min magnitude</td><td>M 2.0</td></tr>
+        <tr><td>Earthquake time window</td><td>30 days</td></tr>
+      </table>
+
+      <hr class="divider">
+      <h2>Tech Stack</h2>
+      <table>
+        <tr><th>Library</th><th>Purpose</th></tr>
+        <tr><td><a href="https://leafletjs.com" target="_blank">Leaflet.js 1.9.4</a></td><td>Interactive mapping library</td></tr>
+        <tr><td><a href="https://carto.com/basemaps/" target="_blank">CartoDB Dark Matter</a></td><td>Basemap tiles</td></tr>
+        <tr><td><a href="https://corsproxy.io" target="_blank">corsproxy.io</a></td><td>CORS proxy for CAL FIRE API access</td></tr>
+        <tr><td>Vanilla JavaScript</td><td>No frameworks — single HTML file, no build step</td></tr>
+      </table>
+
+      <hr class="divider">
+      <h2>Attribution &amp; License</h2>
+      <div class="attribution">
+        ©Liliane ML Burkhard, 2025<br><br>
+        Author: Liliane ML Burkhard, University of Bern/Hawaii Institute of Geophysics & Planetology
+        <a href="https://www.lmlburkhard.com/" target="_blank">https://www.lmlburkhard.com/</a><br><br>
+        All data sources are publicly available under their respective open data licenses.<br>
+        SCEC CFM: freely available for research and educational use — cite Plesch et al. (2007)<br>
+        USGS earthquake data: public domain (US government)<br>
+        CAL FIRE wildfire data: public domain (California state government)<br>
+        Infrastructure data: compiled from public agency records<br>
+        CartoDB basemap: ©OpenStreetMap contributors, ©CARTO
+      </div>
+
+      <p class="footer-note">LA-GRID is part of a suite of interactive geoscience and planetary science visualization tools by Liliane ML Burkhard, including Shadowhunter (permanently shadowed region calculator) and the BELA Altimetry Viewer (BepiColombo laser altimeter data; expected online in 2027).</p>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function openAbout()  { document.getElementById('about-overlay').classList.add('open'); }
+function closeAbout() { document.getElementById('about-overlay').classList.remove('open'); }
+function overlayClick(e) { if(e.target.id==='about-overlay') closeAbout(); }
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeAbout(); });
 </script>
 </body>
 </html>
