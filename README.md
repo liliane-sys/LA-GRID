@@ -20,7 +20,7 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
 
 - **455 fault traces** from the SCEC Community Fault Model (CFM) v6.1, including surface traces (solid) and blind fault projections (dashed) — Hover over any fault line to see its name.
 - **Live earthquake feed** — M2.0+ earthquakes for the last 30 days via the USGS real-time API, color-coded and sized by magnitude. Earthquakes M3.0+ pulse with an animated ring to indicate larger earthquake activity.
-- **Live wildfire feed** — active California wildfire incidents from the NIFC live data service, shown as animated flame icons 🔥
+- **Live wildfire feed** — active California wildfire incidents from the CAL FIRE Incident API data service, shown as animated flame icons 🔥
 - **Critical infrastructure layers:**
   - **Aqueducts** — Los Angeles Aqueduct (1st & 2nd), Colorado River Aqueduct, State Water Project/California Aqueduct
   - **Dams** — 15 major dams and reservoirs including Castaic, Pyramid, Hansen, San Gabriel, Diamond Valley Lake and Prado
@@ -48,7 +48,7 @@ The file is fully self-contained: The SCEC CFM fault geometry is embedded direct
 |---|---|---|
 | Fault Lines | SCEC Community Fault Model v6.1 | https://www.scec.org/research/cfm |
 | Earthquakes | USGS Earthquake Hazards Program | https://earthquake.usgs.gov/fdsnws/event/1/ |
-| Wildfires | NIFC WFIGS Incident Locations | https://data-nifc.opendata.arcgis.com/ |
+| Wildfires | CAL FIRE Incident API | https://www.fire.ca.gov/incidents/ |
 | Aqueducts | LADWP/Metropolitan Water District | https://www.ladwp.com / https://www.mwdh2o.com |
 | Dams | National Inventory of Dams/Public Records | https://nid.usace.army.mil |
 | Power Substations | LADWP/SCE/Public Records | https://www.ladwp.com / https://www.sce.com |
@@ -77,7 +77,7 @@ Earthquakes M3.0+ that occurred within the past 30 days display a pulsing ring t
 
 ### Wildfire Data
 
-Active wildfire incident locations from the National Interagency Fire Center (NIFC) Wildland Fire Incident Management Application (WFIGS), filtered to California. Wildfires update every few hours on the NIFC side, but the dashboard auto-refreshes every 5 minutes.
+Live feed of active wildfire incidents in California from CAL FIRE Incident API, California Department of Forestry and Fire Protection (https://www.fire.ca.gov/incidents/). Covers all state, federal, and county-managed incidents reported to CAL FIRE. Data is fetched via corsproxy.io to resolve browser cross-origin restrictions. Coverage includes incidents of 10+ acres; very small or unreported fires may not appear. Dashboard auto-refreshes every 5 minutes.
 
 ### Infrastructure Data
 
@@ -108,6 +108,7 @@ Infrastructure layers are compiled from public records and official agency sourc
 
 - [Leaflet.js](https://leafletjs.com) 1.9.4 — interactive mapping library
 - [CartoDB Dark Matter](https://carto.com/basemaps/) — basemap tiles
+- corsproxy.io — CORS proxy for CAL FIRE API access
 - Vanilla JavaScript — no frameworks
 - Single HTML file — no build step, no backend
 
@@ -128,6 +129,7 @@ www.lmlburkhard.com
 All data sources are publicly available under their respective open data licenses:
 - SCEC CFM: freely available for research and educational use — cite Plesch et al. (2007)
 - USGS earthquake data: public domain (US government)
-- NIFC wildfire data: public domain (US government)
+- CAL FIRE wildfire data: public domain (California state government), California Department of Forestry and Fire Protection, https://www.fire.ca.gov
 - Infrastructure data: compiled from public agency records
 - CartoDB basemap: ©OpenStreetMap contributors, ©CARTO
+- corsproxy.io: free CORS proxy service used to enable browser access to the CAL FIRE API — https://corsproxy.io
