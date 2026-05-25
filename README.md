@@ -108,7 +108,7 @@ Infrastructure layers are compiled from public records and official agency sourc
 
 - [Leaflet.js](https://leafletjs.com) 1.9.4 — interactive mapping library
 - [CartoDB Dark Matter](https://carto.com/basemaps/) — basemap tiles
-- corsproxy.io — CORS proxy for CAL FIRE API access
+- [corsproxy.io](https://corsproxy.io)— CORS proxy for CAL FIRE API access
 - Vanilla JavaScript — no frameworks
 - Single HTML file — no build step, no backend
 
@@ -129,7 +129,7 @@ www.lmlburkhard.com
 All data sources are publicly available under their respective open data licenses:
 - SCEC CFM: freely available for research and educational use — cite Plesch et al. (2007)
 - USGS earthquake data: public domain (US government)
-- CAL FIRE wildfire data: public domain (California state government), California Department of Forestry and Fire Protection, https://www.fire.ca.gov
+- CAL FIRE wildfire data: public domain (California state government), California Department of Forestry and Fire Protection
 - Infrastructure data: compiled from public agency records
 - CartoDB basemap: ©OpenStreetMap contributors, ©CARTO
-- corsproxy.io: free CORS proxy service used to enable browser access to the CAL FIRE API — https://corsproxy.io
+- corsproxy.io: free CORS proxy service used to enable browser access to the CAL FIRE API
