@@ -25,10 +25,13 @@
                   Live feed, M2.0+, updated every 5 minutes.
                   Coverage: 33.2-34.9°N, 120.6-116.4°W (last 30 days).
 
-    Wildfires:    WFIGS Incident Locations — Current
-                  National Interagency Fire Center (NIFC)
-                  https://data-nifc.opendata.arcgis.com/
+    Wildfires:    CAL FIRE Incident API
+                  California Department of Forestry and Fire Protection
+                  https://www.fire.ca.gov/incidents/
                   Live feed of active wildfire incidents in California.
+                  Covers state, federal and county-managed incidents reported to CAL FIRE.
+                  Incidents of 10+ acres; very small or unreported fires may not appear.
+                  Fetched via corsproxy.io to resolve browser cross-origin restrictions.
 
     Infrastructure layers are compiled from public records and official agency sources:
                   Aqueducts: Approximate routes of the LA Aqueduct (1st & 2nd barrels),
@@ -199,7 +202,7 @@
   <div class="panel-section">
     <div class="section-title">Data Sources</div>
     <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);line-height:2.2">
-      Faults: SCEC CFM 6.1<br>Quakes: USGS Live Feed<br>Fires: NIFC Live Feed<br>Infra: LADWP/MWD/Public Records
+      Faults: SCEC CFM 6.1<br>Quakes: USGS Live Feed<br>Fires: CAL FIRE Live Feed<br>Infra: LADWP/MWD/Public Records
     </div>
   </div>
 </div>
@@ -207,6 +210,11 @@
   <div id="info-popup-close" onclick="closePopup()">x</div>
   <div id="info-popup-title"></div>
   <div id="info-popup-body"></div>
+</div>
+<div id="stats-bar">
+  <div class="stat-chip">M3+ (7d)<span id="stat-m3">-</span></div>
+  <div class="stat-chip">M4+ (30d)<span id="stat-m4">-</span></div>
+  <div class="stat-chip">Max Mag<span id="stat-max">-</span></div>
 </div>
 <div id="stats-bar">
   <div class="stat-chip">M3+ (7d)<span id="stat-m3">-</span></div>
@@ -283,26 +291,53 @@ async function loadEarthquakes(){
 
 async function loadWildfires(){
   try{
-    const res=await fetch('https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query?where=POOState%3D%27US-CA%27&outFields=IncidentName%2CAcresBurned%2CContainmentPercent&geometry=-120.6%2C33.2%2C-116.4%2C34.9&geometryType=esriGeometryEnvelope&spatialRel=esriSpatialRelIntersects&f=geojson');
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
+    // CAL FIRE covers ALL California fires including county-managed incidents.
+    // NIFC/WFIGS only tracks federal/multi-agency fires and misses local fires.
+    // fire.ca.gov blocks direct browser requests (no CORS headers), so route
+    // through corsproxy.io which adds the required Access-Control-Allow-Origin header, yessah!
+    const CALFIRE = 'https://www.fire.ca.gov/umbraco/api/IncidentApi/List?inactive=false';
+    const res = await fetch('https://corsproxy.io/?' + encodeURIComponent(CALFIRE));
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const fires = await res.json();
+
     layers.wildfires.clearLayers();
-    (data.features||[]).forEach(f=>{
-      const c=f.geometry?.coordinates;if(!c)return;
-      const[lon,lat]=c;
-      const name=f.properties?.IncidentName||'Active Fire';
-      const acres=f.properties?.AcresBurned,pct=f.properties?.ContainmentPercent;
-      const icon=L.divIcon({className:'',iconSize:[18,18],iconAnchor:[9,9],html:'<div style="font-size:20px;line-height:1;filter:drop-shadow(0 0 6px #ff4400);animation:livepulse 1.5s ease-in-out infinite;cursor:pointer">🔥</div>'});
+
+    // LA region bounding box — filter client-side
+    const minLat=33.0, maxLat=35.2, minLon=-121.2, maxLon=-115.8;
+    let count=0;
+
+    (Array.isArray(fires)?fires:[]).forEach(f=>{
+      const lat=parseFloat(f.Latitude), lon=parseFloat(f.Longitude);
+      if(!lat||!lon||isNaN(lat)||isNaN(lon))return;
+      if(lat<minLat||lat>maxLat||lon<minLon||lon>maxLon)return;
+      if(f.IsActive===false)return;  // skip explicitly inactive
+
+      const name=f.Name||'Active Fire';
+      const acres=f.AcresBurned;
+      const pct=f.PercentContained??f.ContainmentPercent;
+      const county=f.County;
+      const started=f.StartedDateOnly;
+
+      const icon=L.divIcon({className:'',iconSize:[18,18],iconAnchor:[9,9],
+        html:'<div style="font-size:20px;line-height:1;filter:drop-shadow(0 0 6px #ff4400);animation:livepulse 1.5s ease-in-out infinite;cursor:pointer">🔥</div>'});
       L.marker([lat,lon],{icon}).on('click',e=>{
         L.DomEvent.stopPropagation(e);
-        showPopup('#ff4400',`Fire: ${name}`,`<div class="info-row"><span class="info-key">Status</span><span style="color:#ff4400">ACTIVE</span></div>${acres!=null?`<div class="info-row"><span class="info-key">Acres</span><span>${Number(acres).toLocaleString()}</span></div>`:''}${pct!=null?`<div class="info-row"><span class="info-key">Contained</span><span>${pct}%</span></div>`:''}`);
+        showPopup('#ff4400',`🔥 ${name}`,`
+          <div class="info-row"><span class="info-key">Status</span><span style="color:#ff4400">ACTIVE — CAL FIRE</span></div>
+          ${county?`<div class="info-row"><span class="info-key">County</span><span>${county}</span></div>`:''}
+          ${acres!=null?`<div class="info-row"><span class="info-key">Acres Burned</span><span>${Number(acres).toLocaleString()}</span></div>`:''}
+          ${pct!=null?`<div class="info-row"><span class="info-key">Contained</span><span>${pct}%</span></div>`:''}
+          ${started?`<div class="info-row"><span class="info-key">Started</span><span>${started}</span></div>`:''}
+        `);
       }).addTo(layers.wildfires);
+      count++;
     });
-  }catch(e){console.error('Fire error:',e);}
+    console.log(`CAL FIRE: ${count} active fire(s) in LA region`);
+  }catch(e){console.error('CAL FIRE error:',e);}
 }
 
 
-// ── Infrastructure layers ───────────────────────────────────────────────────
+// ── Infrastructure layers ──────────────────────────────────────────────────
 
 function infraIcon(color, symbol, size) {
   return L.divIcon({
@@ -432,7 +467,7 @@ function loadPorts() {
   const PORTS = [
     { name:'Port of Los Angeles', lat:33.732, lon:-118.261, info:'Largest container port in the US' },
     { name:'Port of Long Beach', lat:33.755, lon:-118.195, info:'Second busiest US port by cargo volume' },
-    { name:'Port of Hueneme (Naval/Commercial)', lat:34.155, lon:-119.210, info:'Only deep-water port between LA and San Francisco' },
+    { name:'Port of Hueneme (Naval / Commercial)', lat:34.155, lon:-119.210, info:'Only deep-water port between LA and San Francisco' },
     { name:'Los Angeles International Airport (LAX)', lat:33.942, lon:-118.408, info:'Major international hub, lifeline in emergency' },
     { name:'Bob Hope Airport (BUR)', lat:34.201, lon:-118.359, info:'Regional airport, Burbank' },
     { name:'Long Beach Airport (LGB)', lat:33.817, lon:-118.152, info:'Regional airport' },
