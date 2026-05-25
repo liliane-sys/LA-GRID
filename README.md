@@ -8,6 +8,7 @@ An interactive, browser-based geospatial risk dashboard for the greater Los Ange
                 open data licenses. See individual source URLs below.
                 ©Liliane ML Burkhard, 2025
 
+Go to website: [LA-GRID](https://liliane-sys.github.io/LA-GRID/)
 ---
 
 ## Preview
