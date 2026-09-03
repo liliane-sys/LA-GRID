@@ -99,6 +99,7 @@
   .layer-label{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:500;letter-spacing:0.5px;}
   .layer-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
   .layer-line{width:20px;height:3px;border-radius:2px;flex-shrink:0;}
+  .layer-sym{width:14px;height:14px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;line-height:1;color:#000;}
   .toggle{position:relative;width:34px;height:18px;flex-shrink:0;}
   .toggle input{display:none;}
   .toggle-track{position:absolute;inset:0;background:rgba(255,255,255,0.1);border-radius:9px;transition:background 0.2s;cursor:pointer;}
@@ -174,19 +175,19 @@
       <label class="toggle"><input type="checkbox" id="toggle-aqueducts" checked><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
     </div>
     <div class="layer-row" onclick="toggleLayer('dams')">
-      <div class="layer-label"><div class="layer-dot" style="background:#00bfff;box-shadow:0 0 5px rgba(0,191,255,0.5)"></div>Dams</div>
+      <div class="layer-label"><div class="layer-sym" style="background:#00bfff;box-shadow:0 0 5px rgba(0,191,255,0.5)">◆</div>Dams</div>
       <label class="toggle"><input type="checkbox" id="toggle-dams" checked><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
     </div>
     <div class="layer-row" onclick="toggleLayer('power')">
-      <div class="layer-label"><div class="layer-dot" style="background:#ffe033;box-shadow:0 0 5px rgba(255,224,51,0.5)"></div>Power Substations</div>
+      <div class="layer-label"><div class="layer-sym" style="background:#ffe033;box-shadow:0 0 5px rgba(255,224,51,0.5)">⚡</div>Power Substations</div>
       <label class="toggle"><input type="checkbox" id="toggle-power" checked><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
     </div>
     <div class="layer-row" onclick="toggleLayer('ports')">
-      <div class="layer-label"><div class="layer-dot" style="background:#00e5ff;box-shadow:0 0 5px rgba(0,229,255,0.5)"></div>Ports</div>
+      <div class="layer-label"><div class="layer-sym" style="background:#00e5ff;box-shadow:0 0 5px rgba(0,229,255,0.5)">⚓</div>Ports</div>
       <label class="toggle"><input type="checkbox" id="toggle-ports" checked><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
     </div>
     <div class="layer-row" onclick="toggleLayer('hospitals')">
-      <div class="layer-label"><div class="layer-dot" style="background:#ff4466;box-shadow:0 0 5px rgba(255,68,102,0.5)"></div>Major Hospitals</div>
+      <div class="layer-label"><div class="layer-sym" style="background:#ff4466;box-shadow:0 0 5px rgba(255,68,102,0.5)">🏥</div>Major Hospitals</div>
       <label class="toggle"><input type="checkbox" id="toggle-hospitals" checked><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
     </div>
   </div>
