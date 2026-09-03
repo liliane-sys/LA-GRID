@@ -238,7 +238,7 @@ const map=L.map('map',{
   maxBounds:laBounds,
   maxBoundsViscosity:1.0
 });
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap contributors &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_2vom_1_8c946240c562bc6894f68069',{attribution:'&copy; OpenStreetMap contributors &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
 const layers={faults:L.layerGroup().addTo(map),quakes:L.layerGroup().addTo(map),wildfires:L.layerGroup().addTo(map),aqueducts:L.layerGroup().addTo(map),dams:L.layerGroup().addTo(map),power:L.layerGroup().addTo(map),ports:L.layerGroup().addTo(map),hospitals:L.layerGroup().addTo(map)};
 function setProgress(p,m){document.getElementById('loading-bar').style.width=p+'%';document.getElementById('loading-status').textContent=m;}
 function hideLoading(){const el=document.getElementById('loading');el.classList.add('hidden');setTimeout(()=>el.style.display='none',900);}
